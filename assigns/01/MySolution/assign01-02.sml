@@ -10,7 +10,7 @@ fun xlist_sub(xs: 'a xlist, i0: int): 'a =
 				if i0 > 0 then xlist_sub(xs, i0-1) else x1
 			| xlist_snoc(xs, x1) => 
 				if i0 = (xlist_size(xs)) then x1 else 
-					if i0 < (xlist_size(xs)) then xlist_sub(xs, i0-1)
+					if i0 < (xlist_size(xs)) then xlist_sub(xs, i0)
 					else raise XlistSubscript
 			| xlist_append(xs, ys) => 
 				if i0 > (xlist_size(xs)-1) then xlist_sub(ys,i0-xlist_size(xs)) else 
