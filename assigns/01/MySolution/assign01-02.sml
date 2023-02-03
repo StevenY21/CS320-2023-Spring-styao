@@ -13,9 +13,7 @@ fun xlist_sub(xs: 'a xlist, i0: int): 'a =
 					if i0 < (xlist_size(xs)) then xlist_sub(xs, i0)
 					else raise XlistSubscript
 			| xlist_append(xs, ys) => 
-				if i0 > (xlist_size(xs)-1) then xlist_sub(ys,i0-xlist_size(xs)) else 
-					if i0 < (xlist_size(xs)-1) then xlist_sub(xs, i0) 
-					else raise XlistSubscript
+				if i0 > (xlist_size(xs)-1) then xlist_sub(ys,i0-xlist_size(xs)) else xlist_sub(xs, i0)
 			| xlist_reverse(xs) =>  
 				xlist_sub(xs, xlist_size(xs)-i0-1)
 	
