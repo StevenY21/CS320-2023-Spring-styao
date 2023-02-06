@@ -8,7 +8,8 @@
 # nil | cons of ('a * 'a list)
 
 class mylist:
-    def get_ctag():
+    ctag = -1
+    def get_ctag(self):
         return self.ctag
 # end-of-class(mylist)
 
@@ -24,9 +25,9 @@ class mylist_cons(mylist):
         self.cons1 = cons1
         self.cons2 = cons2
         return None
-    def get_cons1():
+    def get_cons1(self):
         return self.cons1
-    def get_cons2():
+    def get_cons2(self):
         return self.cons2
 # end-of-class(mylist_cons)
 
