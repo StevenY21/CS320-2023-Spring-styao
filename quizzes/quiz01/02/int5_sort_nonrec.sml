@@ -49,12 +49,46 @@ int5_sort_nr(xs) for every 5-tuple xs of the type int5.
 *)
 (* ****** ****** *)
 
-fun
-int5_sort_nr(xs: int5): int5 =
-(*
-Please Give your implementation as follows:
-*)
+fun sortval(x: int, xs: int5): int5 =
+let
+	val temp = 0
+in 
+	if #1
 
+fun int5_sort_nr(xs: int5): int5 =
+	let
+		val temp = 0
+	in
+		if #1(xs) > #2(xs) then
+			temp = #1(xs)
+			#1(xs) = #2(xs)
+			#2(xs) = temp
+		else if #1(xs) > #3(xs) then
+			temp = #1(xs)
+			#1(xs) = #3(xs)
+			#3(xs) = temp
+		else if #1(xs) > #4(xs) then
+			temp = #1(xs)
+			#1(xs) = #4(xs)
+			#4(xs) = temp
+		else if #1(xs) > #5(xs) then
+			temp = #1(xs)
+			#1(xs) = #5(xs)
+			#5(xs) = temp
+#2
+		else if #2(xs) > #3(xs) then
+			temp = #2(xs)
+			#2(xs) = #3(xs)
+			#3(xs) = temp
+		else if #2(xs) > #4(xs) then
+			temp = #2(xs)
+			#2(xs) = #4(xs)
+			#4(xs) = temp
+		else if #2(xs) > #5(xs) then
+			temp = #2(xs)
+			#2(xs) = #5(xs)
+			#5(xs) = temp
+		
 
 (* ****** ****** *)
 
