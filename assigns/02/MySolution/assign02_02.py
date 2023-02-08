@@ -29,8 +29,10 @@ def mylist_quicksort(xs):
             return (mylist_nil(), mylist_nil())
         else:
             yszs = qpart(xs.cons2, p0)
+            ys = yszs[0]
+            zs = yszs[1]
             if xs.cons1 <= p0:
-                return (mylist_cons(xs.cons1, yszs[0]), yszs[1])
+                return (mylist_cons(xs.cons1, ys), zs)
             else:
-                return (yszs[0], mylist_cons(xs.cons1, yszs[1]))
+                return (ys, mylist_cons(xs.cons1, zs))
     return qsort(xs)

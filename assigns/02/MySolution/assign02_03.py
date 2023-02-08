@@ -19,7 +19,9 @@ def mylist_mergesort(xs):
                 return (mylist_cons(xs.cons1, mylist_nil()), mylist_nil())
             else:
                 yszs = split(xs.cons2.cons2)
-                return (mylist_cons(xs.cons1, yszs[0]), mylist_cons(xs.cons2.cons1, yszs[1]))
+                ys = yszs[0]
+                zs = yszs[1]
+                return (mylist_cons(xs.cons1, ys), mylist_cons(xs.cons2.cons1, zs))
     def merge(ys, zs):
         if mylist_nilq(ys) == True:
             return zs
@@ -38,4 +40,6 @@ def mylist_mergesort(xs):
             return mylist_cons(xs.cons1, mylist_nil())
         else:
             yszs = split(xs.cons2.cons2)
-            return merge(mylist_mergesort(mylist_cons(xs.cons1, yszs[0])), mylist_mergesort(mylist_cons(xs.cons2.cons1, yszs[1])))
+            ys = yszs[0]
+            zs = yszs[1]
+            return merge(mylist_mergesort(mylist_cons(xs.cons1, ys)), mylist_mergesort(mylist_cons(xs.cons2.cons1, zs)))
