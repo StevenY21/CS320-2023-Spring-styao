@@ -253,7 +253,6 @@ in the given tuple are from the same deck.
 fun card5_fullhouse(cs: card5): bool
 //
 *)
-<<<<<<< HEAD
 fun card5_fullhouse(cs: card5): bool =
 	let
 		val (x1, x2, x3, x4, x5) = (rank2int(card_rank(#1(cs))), rank2int(card_rank(#2(cs))), rank2int(card_rank(#3(cs))), rank2int(card_rank(#4(cs))), rank2int(card_rank(#5(cs))))
@@ -266,16 +265,6 @@ fun card5_fullhouse(cs: card5): bool =
 		else
 			if #4(xs) <> #5(xs) then false else true
 	end
-	
-=======
-
-fun
-card5_fullhouse(cs: card5): bool = false
-(*
-Please Give your implementation as follows:
-*)
-
->>>>>>> upstream/main
 (* ****** ****** *)
 
 (* end of [CS320-2023-Spring-quiz01-card5_fullhouse.sml] *)
