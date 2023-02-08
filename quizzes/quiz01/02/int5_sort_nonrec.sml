@@ -49,46 +49,35 @@ int5_sort_nr(xs) for every 5-tuple xs of the type int5.
 *)
 (* ****** ****** *)
 
-fun sortval(x: int, xs: int5): int5 =
-let
-	val temp = 0
-in 
-	if #1
-
+fun int2_sort(xs: int2): int2 = 
+	if #1(xs) > #2(xs) then (#2(xs), #1(xs)) else (#1(xs), #2(xs))
+fun int3_sort(xs: int3): int3 =
+	let
+		val ys = int2_sort((#1(xs), #2(xs)))
+	in
+		if #3(xs) > #2(ys) then (#1(ys), #2(ys), #3(xs))
+		else if #3(xs) > #1(ys) then (#1(ys), #3(xs), #2(ys))
+		else (#3(xs), #1(ys), #2(ys))
+	end
+fun int4_sort(xs: int4): int4 = 
+	let
+		val ys = int3_sort((#1(xs), #2(xs), #3(xs)))
+	in 
+		if #4(xs) > #3(ys) then (#1(ys), #2(ys), #3(ys), #4(xs))
+		else if #4(xs) > #2(ys) then (#1(ys), #2(ys), #4(xs), #3(ys))
+		else if #4(xs) > #1(ys) then (#1(ys), #4(xs), #2(ys), #3(ys))
+		else (#4(xs), #1(ys), #2(ys), #3(ys))
+	end
 fun int5_sort_nr(xs: int5): int5 =
 	let
-		val temp = 0
+		val ys = int4_sort((#1(xs), #2(xs), #3(xs), #4(xs)))
 	in
-		if #1(xs) > #2(xs) then
-			temp = #1(xs)
-			#1(xs) = #2(xs)
-			#2(xs) = temp
-		else if #1(xs) > #3(xs) then
-			temp = #1(xs)
-			#1(xs) = #3(xs)
-			#3(xs) = temp
-		else if #1(xs) > #4(xs) then
-			temp = #1(xs)
-			#1(xs) = #4(xs)
-			#4(xs) = temp
-		else if #1(xs) > #5(xs) then
-			temp = #1(xs)
-			#1(xs) = #5(xs)
-			#5(xs) = temp
-#2
-		else if #2(xs) > #3(xs) then
-			temp = #2(xs)
-			#2(xs) = #3(xs)
-			#3(xs) = temp
-		else if #2(xs) > #4(xs) then
-			temp = #2(xs)
-			#2(xs) = #4(xs)
-			#4(xs) = temp
-		else if #2(xs) > #5(xs) then
-			temp = #2(xs)
-			#2(xs) = #5(xs)
-			#5(xs) = temp
-		
+		if #5(xs) >= #4(ys) then (#1(ys), #2(ys), #3(ys), #4(ys), #5(xs))
+		else if #5(xs) >= #3(ys) then (#1(ys), #2(ys), #3(ys), #5(xs), #4(ys))
+		else if #5(xs) >= #2(ys) then (#1(ys), #2(ys), #5(xs), #4(ys), #3(ys))
+		else if #5(xs) >= #1(ys) then (#1(ys), #5(xs), #2(ys), #3(ys), #4(ys))
+		else (#5(xs), #1(ys), #2(ys), #3(ys), #4(ys))
+	end
 
 (* ****** ****** *)
 
