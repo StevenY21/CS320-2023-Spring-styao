@@ -1,0 +1,19 @@
+[import ./../assign02.py] is done!
+[import ./../MySolution/assign02_01.py] is done!
+xs = (1;2;3)
+xs = (1;2;3;1;2;3)
+xs = (3;2;1;3;2;1)
+xs = (1;2;3;1;2;3;3;2;1;3;2;1)
+Assign02-01-test passed!
+[import ./../assign02.py] is done!
+[import ./../assign02.py] is done!
+[import ./../MySolution/assign02_02.py] is done!
+xs = (1;2;4;3;1;3;4;2;1;2;4;3;1;3;4;2;1;2;4;3;1;3;4;2;1;2;4;3;1;3;4;2)
+ys = (1;1;1;1;1;1;1;1;2;2;2;2;2;2;2;2;3;3;3;3;3;3;3;3;4;4;4;4;4;4;4;4)
+Assign02-02-test passed!
+[import ./../assign02.py] is done!
+[import ./../MySolution/assign02_03.py] is done!
+xs = (1;2;4;3;1;3;4;2;1;2;4;3;1;3;4;2;1;2;4;3;1;3;4;2;1;2;4;3;1;3;4;2)
+ys = (1;1;1;1;1;1;1;1;2;2;2;2;2;2;2;2;3;3;3;3;3;3;3;3;4;4;4;4;4;4;4;4)
+ys = (1;1;1;1;1;1;1;1;2;2;2;2;2;2;2;2;3;3;3;3;3;3;3;3;4;4;4;4;4;4;4;4)
+Assign02-03-test passed!
