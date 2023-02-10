@@ -15,31 +15,39 @@ def mylist_mergesort(xs):
         if mylist_nilq(xs) == True:
             return (mylist_nil(), mylist_nil())
         elif mylist_consq(xs) == True:
-            if mylist_nilq(xs.cons2) == True:
-                return (mylist_cons(xs.cons1, mylist_nil()), mylist_nil())
-            elif mylist_consq(xs.cons2) == True:
-                yszs = split(xs.cons2.cons2)
-                ys = yszs[0]
-                zs = yszs[1]
-                return (mylist_cons(xs.cons1, ys), mylist_cons(xs.cons2.cons1, zs))
+            x1 = xs.get_cons1()
+            xs = xs.get_cons2()
+            if mylist_nilq(xs) == True:
+                return (mylist_cons(x1, mylist_nil()), mylist_nil())
+            elif mylist_consq(xs) == True:
+                x2 = xs.get_cons1()
+                xs = xs.get_cons2()
+                (ys, zs) = split(xs)
+                return (mylist_cons(x1, ys), mylist_cons(x2, zs))
     def merge(ys, zs):
         if mylist_nilq(ys) == True:
             return zs
         elif mylist_consq(ys) == True:
+            y1 = ys.get_cons1()
+            ys = ys.get_cons2()
             if mylist_nilq(zs) == True:
-                return mylist_cons(ys.cons1, ys.cons2)
+                return mylist_cons(y1, ys)
             elif mylist_consq(zs) == True:
-                if ys.cons1 <= zs.cons1:
-                    return mylist_cons(ys.cons1, merge(ys.cons2, mylist_cons(zs.cons1, zs.cons2)))
+                z1 = zs.get_cons1()
+                zs = zs.get_cons2()
+                if y1 <= z1:
+                    return mylist_cons(y1, merge(ys, mylist_cons(z1, zs)))
                 else:
-                    return mylist_cons(zs.cons1, merge(mylist_cons(ys.cons1, ys.cons2), zs.cons2))
+                    return mylist_cons(z1, merge(mylist_cons(y1, ys), zs))
     if mylist_nilq(xs) == True:
         return mylist_nil()
     elif mylist_consq(xs) == True:
-        if mylist_nilq(xs.cons2) == True:
-            return mylist_cons(xs.cons1, mylist_nil())
-        elif mylist_consq(xs.cons2) == True:
-            yszs = split(xs.cons2.cons2)
-            ys = yszs[0]
-            zs = yszs[1]
-            return merge(mylist_mergesort(mylist_cons(xs.cons1, ys)), mylist_mergesort(mylist_cons(xs.cons2.cons1, zs)))
+        x1 = xs.get_cons1()
+        xs = xs.get_cons2()
+        if mylist_nilq(xs) == True:
+            return mylist_cons(x1, mylist_nil())
+        elif mylist_consq(xs) == True:
+            x2 = xs.get_cons1()
+            xs = xs.get_cons2()
+            (ys, zs) = split(xs)
+            return merge(mylist_mergesort(mylist_cons(x1, ys)), mylist_mergesort(mylist_cons(x2, zs)))
