@@ -15,7 +15,7 @@ def mylist_quicksort(xs):
     def qsort(xs):
         if mylist_nilq(xs) == True:
             return mylist_nil()
-        else:
+        elif mylist_consq(xs) == True:
             yszs = qpart(xs.cons2, xs.cons1)
             ys = qsort(yszs[0])
             x1 = mylist_cons(xs.cons1, mylist_nil())
@@ -27,7 +27,7 @@ def mylist_quicksort(xs):
     def qpart(xs, p0):
         if mylist_nilq(xs) == True:
             return (mylist_nil(), mylist_nil())
-        else:
+        elif mylist_consq(xs) == True:
             yszs = qpart(xs.cons2, p0)
             ys = yszs[0]
             zs = yszs[1]
