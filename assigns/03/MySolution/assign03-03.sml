@@ -15,6 +15,15 @@ equals [f(0), f(1), ..., f(n-1)]
 list_tabulate(n: int, f: int -> 'a): 'a list
 //
 *)
+fun list_tabulate(n: int, f: int-> 'a): 'a list = 
+	let
+		fun loop( f: int -> 'a, start: int, finish: int): 'a list = 
+			if start = finish then [] 
+			else f(start) :: loop(f, start+1, finish)
+	in
+		loop(f, 0, n)
+	end
+			
 
 (* ****** ****** *)
 
