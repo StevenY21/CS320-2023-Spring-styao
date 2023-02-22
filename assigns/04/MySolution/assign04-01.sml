@@ -28,5 +28,14 @@ end
 *)
 
 (* ****** ****** *)
+fun isPrime(n0: int): bool =
+	let 
+		fun prime(i0: int): bool = 
+			if i0 * i0 > n0 then true else 
+				if i0 <= 1 then true else 
+					if n0 mod i0 = 0 then false else true
+	in
+		if n0 <= 1 then false else int1_forall(n0, prime)
+	end
 
 (* end of [CS320-2023-Spring-assign04-01.sml] *)
