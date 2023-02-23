@@ -41,5 +41,6 @@ forall_to_exists
 *)
 
 (* ****** ****** *)
-
+fun forall_to_exists (forall: ('xs,'x0)forall_t): ('xs,'x0)exists_t =
+    fn(xs, test) => not (forall(xs, fn(x) => not (test(x))))
 (* end of [CS320-2023-Spring-assign04-03.sml] *)
