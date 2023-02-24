@@ -78,6 +78,10 @@ val it = () : unit
 [opening assign04-02-test.sml]
 [opening ./../MySolution/assign04-02.sml]
 [opening ./../../../mysmlib/mysmlib-cls.sml]
+[autoloading]
+[library $SMLNJ-BASIS/basis.cm is stable]
+[library $SMLNJ-BASIS/(basis.cm):basis-common.cm is stable]
+[autoloading done]
 type 'a optn = 'a option
 exception ERROR320 of string optn
 exception ConsMatch320
@@ -146,6 +150,7 @@ val list_foldleft = fn : 'a list * 'b * ('b * 'a -> 'b) -> 'b
 val list_foldright = fn : 'a list * 'b * ('b * 'a -> 'b) -> 'b
 val string_foldleft = fn : string * 'a * ('a * char -> 'a) -> 'a
 val string_foldright = fn : string * 'a * (char * 'a -> 'a) -> 'a
+val list_tabulate = fn : int * (int -> 'a) -> 'a list
 val it = () : unit
 val list_subsets = fn : 'a list -> 'a list list
 val it = () : unit
