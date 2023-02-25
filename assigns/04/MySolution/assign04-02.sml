@@ -39,5 +39,5 @@ fn(xs: 'a list) => ...
 
 (* ****** ****** *)
 val list_subsets = 
-  fn(xs: 'a list) => list_foldleft(xs, [[]], fn(xs2, x1) => list_append(xs2, list_map(xs2, fn(xs) => x1 :: xs)))
+  fn(xs: 'a list) => list_foldleft(xs, [[]], fn(res, x1) => list_append(res, list_map(res, fn(xs2) => x1 :: xs2)))
 (* end of [CS320-2023-Spring-assign04-02.sml] *)
