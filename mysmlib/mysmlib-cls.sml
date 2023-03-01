@@ -558,4 +558,136 @@ int1_foldleft
 
 (* ****** ****** *)
 
+type
+('xs, 'x0) foreach_t =
+'xs * ('x0 -> unit) -> unit
+type
+('xs, 'x0) iforeach_t =
+'xs * (int * 'x0 -> unit) -> unit
+type
+('xs, 'x0, 'r0) ifoldleft_t =
+'xs * 'r0 * ('r0 * int * 'x0 -> 'r0) -> 'r0
+
+(* ****** ****** *)
+
+(*
+type
+('xs, 'x0)
+iforeach_t = ('xs, int*'x0) foreach_t
+*)
+
+(* ****** ****** *)
+
+fun
+foreach_to_iforeach
+( foreach
+: ('xs, 'x0) foreach_t): ('xs, 'x0) iforeach_t =
+fn(xs, iwork) =>
+let
+val _ =
+foreach_to_foldleft(foreach)
+(xs, 0, fn(p, x) => (iwork(p, x); p+1)) in () end
+
+(* ****** ****** *)
+
+fun
+foreach_to_ifoldleft
+( foreach
+: ('xs, 'x0) foreach_t): ('xs, 'x0, 'r0) ifoldleft_t =
+fn(xs, r0, ifopr) =>
+foreach_to_foldleft
+(foreach_to_iforeach(foreach))(xs, r0, fn(r0, (i, x)) => ifopr(r0, i, x))
+  
+(* ****** ****** *)
+
+type 'a array = 'a Array.array
+type 'a vector = 'a Vector.vector
+
+(* ****** ****** *)
+val
+array_foreach =
+fn( xs, work ) =>
+int1_foreach
+(Array.length(xs), fn(i) => work(Array.sub(xs, i)))
+val
+array_tabulate = Array.tabulate
+(* ****** ****** *)
+val
+array_forall =
+fn(xs, test) =>
+foreach_to_forall(array_foreach)(xs, test)
+val
+array_foldleft =
+fn(xs, r0, fopr) =>
+foreach_to_foldleft(array_foreach)(xs, r0, fopr)
+val
+array_iforeach =
+fn(xs, iwork) =>
+foreach_to_iforeach(array_foreach)(xs, iwork)
+val
+array_ifoldleft =
+fn(xs, r0, ifopr) =>
+foreach_to_ifoldleft(array_foreach)(xs, r0, ifopr)
+(* ****** ****** *)
+val
+vector_foreach =
+fn( xs, work ) =>
+int1_foreach
+(Vector.length(xs), fn(i) => work(Vector.sub(xs, i)))
+val
+vector_tabulate = Vector.tabulate
+(* ****** ****** *)
+val
+vector_forall =
+fn(xs, test) =>
+foreach_to_forall(vector_foreach)(xs, test)
+val
+vector_foldleft =
+fn(xs, r0, fopr) =>
+foreach_to_foldleft(vector_foreach)(xs, r0, fopr)
+val
+vector_iforeach =
+fn(xs, iwork) =>
+foreach_to_iforeach(vector_foreach)(xs, iwork)
+val
+vector_ifoldleft =
+fn(xs, r0, ifopr) =>
+foreach_to_ifoldleft(vector_foreach)(xs, r0, ifopr)
+(* ****** ****** *)
+
+fun
+list_zip2
+( xs: 'a list
+, ys: 'b list): ('a * 'b) list =
+(
+case xs of
+  nil => nil
+| x1 :: xs =>
+  (
+  case ys of
+    nil => nil
+  | y1 :: ys =>
+    (x1, y1) :: list_zip2(xs, ys))
+) (* end of [list_zip2(xs, ys)]: case *)
+
+(* ****** ****** *)
+
+fun
+list_z2map
+( xs: 'a list
+, ys: 'b list
+, fopr: 'a * 'b -> 'c): 'c list =
+(
+case xs of
+  nil => nil
+| x1 :: xs =>
+  (
+  case ys of
+    nil => nil
+  | y1 :: ys =>
+    fopr(x1, y1) :: list_z2map(xs, ys, fopr))
+) (* end of [list_z2map(xs, ys, fopr)]: case *)
+
+(* ****** ****** *)
+
 (* end of [BUCASCS320-2023-Spring-mysmlib-cls.sml] *)
