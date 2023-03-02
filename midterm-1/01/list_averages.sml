@@ -35,5 +35,24 @@ fun
 list_averages(xs: real list): real list = ...
 *)
 (* ****** ****** *)
+fun list_sub(index: int, xs: real list): real = 
+  case xs of
+    nil => raise ListSubscript320
+    | x1::xs => if index = 0 then x1 else list_sub(index-1,xs)
 
+fun list_avg(index: int, xs: real list, sum: real, count: int): real = 
+  if index < 0 then sum/int2real(count)
+  else list_avg(index-1, xs, sum+list_sub(index, xs), count+1)
+
+fun list_averages(xs: real list): real list =
+    let
+      fun findys(index: int, xs: real list, ys: real list ): real list = 
+        if index = 0 then findys(index+1, xs, list_append(ys, [list_sub(0,xs)/int2real(index+1)]))
+        else if index = list_length(xs) then ys
+        else findys(index+1, xs, list_append(ys, [list_avg(index, xs, 0.0, 0)]))
+    in
+      if list_length(xs) = 0 then []
+      else if list_length(xs) = 1 then xs
+      else findys(0, xs, [])
+    end
 (* end of [CS320-2023-Spring-midterm1-list_averages.sml] *)
