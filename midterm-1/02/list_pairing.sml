@@ -31,5 +31,27 @@ list_pairing
 (xs: 'a list): ('a * 'a) list * 'a option = ...
 *)
 (* ****** ****** *)
+fun list_sub(index: int, xs: 'a list): 'a = 
+  case xs of
+    nil => raise ListSubscript320
+    | x1::xs => if index = 0 then x1 else list_sub(index-1,xs)
+
+fun list_pairs(xs: 'a list, index: int, acc: ('a * 'a) list): ('a * 'a) list = 
+    if list_length(xs) = 2 then [(list_sub(index, xs), list_sub(list_length(xs)-index-1, xs))]
+    else
+        if list_length(xs) mod 2 = 1 andalso ((index*2) + 1) = list_length(xs) then acc
+        else if index = list_length(xs) then acc
+        else list_pairs(xs, index+1, list_append(acc, [(list_sub(index, xs), list_sub(list_length(xs)-index-1, xs))]))
+
+fun middle(xs: 'a list, index: int): 'a =
+    if (index*2)+1 = list_length(xs) then list_sub(index,xs)
+    else middle(xs, index+1)
+
+fun list_pairing(xs: 'a list): ('a * 'a) list * 'a option =
+    if list_length(xs) = 0 then ([], NONE)
+    else if list_length(xs) = 1 then ([], SOME(list_sub(0, xs)))
+    else
+        if list_length(xs) mod 2 = 1 then (list_pairs(xs, 0, []), SOME(middle(xs, 0)))
+        else (list_pairs(xs, 0, []), NONE)
 
 (* end of [CS320-2023-Spring-midterm1-list_pairing.sml] *)
