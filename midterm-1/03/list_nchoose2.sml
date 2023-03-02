@@ -34,5 +34,7 @@ list_nchoose2(xs: int list): (int * int) list = ...
 *)
 
 (* ****** ****** *)
-
+fun list_nchoose2(xs: int list): (int * int) list = 
+    list_foldleft(xs, [], fn(res, x1) => list_append(res, list_map(res, fn(xs2) => x1 :: xs2)))
+(* fn(xs: 'a list) => list_foldleft(xs, [[]], fn(res, x1) => list_append(res, list_map(res, fn(xs2) => x1 :: xs2))) *)
 (* end of [CS320-2023-Spring-midterm1-list_nchoose2.sml] *)
