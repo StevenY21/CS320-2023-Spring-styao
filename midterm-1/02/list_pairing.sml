@@ -35,23 +35,27 @@ fun list_sub(index: int, xs: 'a list): 'a =
   case xs of
     nil => raise ListSubscript320
     | x1::xs => if index = 0 then x1 else list_sub(index-1,xs)
+(*
 
-fun list_pairs(xs: 'a list, index: int, acc: ('a * 'a) list): ('a * 'a) list = 
-    if list_length(xs) = 2 then [(list_sub(index, xs), list_sub(list_length(xs)-index-1, xs))]
-    else
-        if list_length(xs) mod 2 = 1 andalso ((index*2) + 1) = list_length(xs) then acc
-        else if index = list_length(xs) then acc
-        else list_pairs(xs, index+1, list_append(acc, [(list_sub(index, xs), list_sub(list_length(xs)-index-1, xs))]))
+*)
 
-fun middle(xs: 'a list, index: int): 'a =
-    if (index*2)+1 = list_length(xs) then list_sub(index,xs)
-    else middle(xs, index+1)
+fun half_list(xs: 'a list, ys: 'a list, mid: int, count: int): 'a list= 
+    case xs of
+        nil => nil
+        | x1::xs => if count = mid then ys else half_list(xs, list_append(ys, [x1]), mid, count+1)
 
 fun list_pairing(xs: 'a list): ('a * 'a) list * 'a option =
-    if list_length(xs) = 0 then ([], NONE)
-    else if list_length(xs) = 1 then ([], SOME(list_sub(0, xs)))
-    else
-        if list_length(xs) mod 2 = 1 then (list_pairs(xs, 0, []), SOME(middle(xs, 0)))
-        else (list_pairs(xs, 0, []), NONE)
-
+    let
+        val list_len = list_length(xs)
+        val mid = list_len div 2
+        val half_list1 = half_list(xs, [], mid, 0)
+        val half_list2 = half_list(list_reverse(xs), [], mid, 0)
+    in 
+        if list_len = 0 then ([], NONE)
+        else if list_len = 1 then ([], SOME(list_get_at(xs,0)))
+        else
+            if list_len mod 2 = 1 then (list_zip2(half_list1, half_list2),  SOME(list_get_at(xs,mid)))
+            else (list_zip2(half_list1, half_list2), NONE)
+    end
 (* end of [CS320-2023-Spring-midterm1-list_pairing.sml] *)
+
