@@ -113,6 +113,14 @@ bintr_balanced_nonrec = fn(t0: 'a bintr) => ...
 *)
 
 (* ****** ****** *)
+val bintr_balanced_nonrec = fn(t0: 'a bintr) =>
+  case t0 of
+    LEAF _ => true
+    | NODE(tl, tr) =>
+      if bintr_size(tl) <> bintr_size(tr) then false
+      else if bintr_height(tl) <> bintr_height(tr) then false
+      else true
+
 
 (*
 Some testing code:

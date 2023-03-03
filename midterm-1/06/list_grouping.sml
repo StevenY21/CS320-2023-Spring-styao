@@ -27,6 +27,30 @@ two seconds)
 fun
 list_grouping(xs: int list): (int * int) list = ...
 *)
+fun count(xs: int list, x:int, ys: int list, total:int): int * int list = 
+    case xs of 
+        nil => (total, ys)
+        | x1::xs => if x1 = x then count(xs,x,ys,total+1) else count(xs,x,list_append(ys, [x1]),total)
+
+
+fun remove_counted(x:int, xs:int list, acc: int list): int list = 
+    case xs of
+        nil => acc
+        | x1::xs => if x1 = x then remove_counted(x, xs, acc) else remove_counted(x, xs, list_append(acc, [x1]))
+fun list_grouping(xs: int list): (int * int) list = 
+    let 
+        fun loop(xs:int list, acc: (int * int) list): (int * int) list = 
+            case xs of 
+                nil => acc
+                | x1::xs => 
+                    let 
+                        val counted = count(xs, x1, [], 1)
+                    in
+                        loop(#2(counted), list_append(acc, [(#1(counted), x1)]))
+                    end
+    in 
+        loop(xs, [])
+    end
 
 (* ****** ****** *)
 

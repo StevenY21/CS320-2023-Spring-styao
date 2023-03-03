@@ -63,5 +63,30 @@ magic_triangle (n : int) : int list list = ...
 *)
 
 (* ****** ****** *)
+fun add_value(xs: int list, num: int, acc: int list): int list =
+  case xs of 
+    nil => acc
+    | x1::xs => if xs = nil then add_value(xs, num, list_append(acc, [x1 + num])) else add_value(xs, num, acc)
 
+fun get_tri_rows(xs:int list list, ys: int list list, acc: int list, n: int): int list = 
+  case xs of
+    nil => acc
+    | x1::nil => get_tri_rows([[]], ys, list_append(acc,x1), n-1)
+    | x1::xs => if acc = nil then get_tri_rows(xs, ys, list_append(list_append(acc,x1), x1), n-1) else get_tri_rows(xs, ys,list_append(add_value(ys,x1,acc),x1), n-1)
+
+  case xs of
+    nil => acc
+    | x1::nil => get_tri_rows([[]],)
+
+fun magic_triangle(n: int): int list list = 
+  if n = 0 then [[1]]
+  else 
+    let 
+      fun loop(n , acc: int list, count:int): int list list =
+        if count > n then acc
+        else 
+            loop(n, list_append(acc, [get_tri_rows(acc, acc, [], count)]), count+1)
+    in
+      loop(n, [[1]], 0)
+    end
 (* end of [CS320-2023-Spring-midterm1-magic_triangle.sml] *)
