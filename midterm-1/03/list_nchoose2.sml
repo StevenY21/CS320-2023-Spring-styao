@@ -34,7 +34,25 @@ list_nchoose2(xs: int list): (int * int) list = ...
 *)
 
 (* ****** ****** *)
+fun pairs (x: int, xs: int list): (int * int) list = 
+    case xs of 
+        nil => nil
+        | x1::xs => if x <= x1 then list_append([(x, x1)], pairs(x, xs)) else pairs(x,xs)
+fun modify(ys: int list, pos: int, index: int): int list = 
+    case ys of 
+        nil=> nil
+        | y1::ys => if index <> pos then y1::(modify(ys, pos, index+1)) else modify(ys, pos, index+1)
+
 fun list_nchoose2(xs: int list): (int * int) list = 
-    list_foldleft(xs, [], fn(res, x1) => list_append(res, list_map(res, fn(xs2) => x1 :: xs2)))
-(* fn(xs: 'a list) => list_foldleft(xs, [[]], fn(res, x1) => list_append(res, list_map(res, fn(xs2) => x1 :: xs2))) *)
+    let
+        val ys = xs
+        fun all_pairs(xs, ys, pos:int): (int * int) list =
+            case xs of
+                nil => nil
+                | x1::xs => list_append(pairs(x1, modify(ys, pos, 0)), all_pairs(xs,ys,pos+1))
+    in 
+        all_pairs(xs,ys,0)
+    end
+
 (* end of [CS320-2023-Spring-midterm1-list_nchoose2.sml] *)
+
