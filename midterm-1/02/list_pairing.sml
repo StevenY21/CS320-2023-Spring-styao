@@ -31,25 +31,21 @@ list_pairing
 (xs: 'a list): ('a * 'a) list * 'a option = ...
 *)
 (* ****** ****** *)
-fun list_sub(index: int, xs: 'a list): 'a = 
-  case xs of
-    nil => raise ListSubscript320
-    | x1::xs => if index = 0 then x1 else list_sub(index-1,xs)
 (*
 
 *)
 
-fun half_list(xs: 'a list, ys: 'a list, mid: int, count: int): 'a list= 
+fun half_list(xs: 'a list, mid: int, count: int): 'a list= 
     case xs of
         nil => nil
-        | x1::xs => if count = mid then ys else half_list(xs, list_append(ys, [x1]), mid, count+1)
+        | x1::xs => if count = mid then nil else x1 :: half_list(xs, mid, count+1)
 
 fun list_pairing(xs: 'a list): ('a * 'a) list * 'a option =
     let
         val list_len = list_length(xs)
         val mid = list_len div 2
-        val half_list1 = half_list(xs, [], mid, 0)
-        val half_list2 = half_list(list_reverse(xs), [], mid, 0)
+        val half_list1 = half_list(xs, mid, 0)
+        val half_list2 = half_list(list_reverse(xs), mid, 0)
     in 
         if list_len = 0 then ([], NONE)
         else if list_len = 1 then ([], SOME(list_get_at(xs,0)))
