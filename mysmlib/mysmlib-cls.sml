@@ -714,4 +714,59 @@ list_concat
 
 (* ****** ****** *)
 
+(*
+HX-2023-03-16:
+Building combinators for lazy-evaluation
+*)
+
+(* ****** ****** *)
+
+datatype 'a strcon =
+  strcon_nil
+| strcon_cons of
+  ('a * (unit -> 'a strcon))
+
+(* ****** ****** *)
+
+type 'a stream = (unit -> 'a strcon)
+
+(* ****** ****** *)
+
+fun
+int1_streamize(n) = fn () =>
+let
+fun
+helper(i): int strcon =
+if
+(i >= n)
+then strcon_nil
+else strcon_cons(i, fn () => helper(i+1)) in helper(0)
+end
+
+(* ****** ****** *)
+
+fun
+list_streamize(xs) = fn () =>
+(
+case xs of
+  nil =>
+  strcon_nil
+| x1 :: xs =>
+  strcon_cons(x1, list_streamize(xs))
+)
+
+(* ****** ****** *)
+
+fun
+stream_make_map(xs, fopr) = fn () =>
+(
+case xs() of
+  strcon_nil =>
+  strcon_nil
+| strcon_cons(x1, xs) =>
+  strcon_cons(fopr(x1), stream_make_map(xs, fopr))
+)
+
+(* ****** ****** *)
+
 (* end of [BUCASCS320-2023-Spring-mysmlib-cls.sml] *)
