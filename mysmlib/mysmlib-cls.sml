@@ -733,14 +733,30 @@ type 'a stream = (unit -> 'a strcon)
 (* ****** ****** *)
 
 fun
+stream_nil
+((*void*)) =
+  fn () => strcon_nil(*void*)
+fun
+stream_cons
+( x1: 'a
+, fxs
+: 'a stream) =
+   fn () => strcon_cons(x1, fxs)
+
+(* ****** ****** *)
+
+fun
 int1_streamize(n) = fn () =>
 let
 fun
 helper(i): int strcon =
 if
 (i >= n)
-then strcon_nil
-else strcon_cons(i, fn () => helper(i+1)) in helper(0)
+then
+strcon_nil(*void*)
+else
+strcon_cons
+(i, fn () => helper(i+1)) in helper(0)
 end
 
 (* ****** ****** *)
@@ -758,13 +774,147 @@ case xs of
 (* ****** ****** *)
 
 fun
-stream_make_map(xs, fopr) = fn () =>
+stream_tabulate
+( n0: int
+, fopr: int -> 'a): 'a stream =
+let
+fun
+fmain1
+(i0: int): 'a stream = fn() =>
+strcon_cons(fopr(i0), fmain1(i0+1))
+fun
+fmain2
+(i0: int): 'a stream = fn() =>
+if
+i0 >= n0
+then strcon_nil else
+strcon_cons(fopr(i0), fmain2(i0+1))
+in
+if n0 < 0 then fmain1(0) else fmain2(0)
+end (* end-of-[stream_tabulate(n0, fopr)] *)
+
+(* ****** ****** *)
+
+fun
+stream_forall
+(fxs, test) =
+let
+fun
+auxmain(fxs): bool =
 (
-case xs() of
+case fxs() of
+  strcon_nil => true
+| strcon_cons(x1, fxs) =>
+  (test(x1) andalso auxmain(fxs))
+)
+in
+  auxmain(fxs)
+end (* end-of-[stream_forall(fxs, test)] *)
+
+fun
+stream_iforall
+(fxs, itest) =
+let
+fun
+auxmain(i0, fxs): bool =
+(
+case fxs() of
+  strcon_nil => true
+| strcon_cons(x1, fxs) =>
+  (itest(i0, x1) andalso auxmain(i0+1, fxs))
+)
+in
+  auxmain(0, fxs)
+end (* end-of-[stream_iforall(fxs, itest)] *)
+
+(* ****** ****** *)
+
+fun
+stream_foreach
+(fxs, work) =
+let
+fun
+auxmain(fxs): unit =
+(
+case fxs() of
+  strcon_nil => ()
+| strcon_cons(x1, fxs) =>
+  (work(x1); auxmain(fxs))
+)
+in
+  auxmain(fxs)
+end (* end-of-[stream_foreach(fxs, work)] *)
+
+fun
+stream_iforeach
+(fxs, iwork) =
+let
+fun
+auxmain(i0, fxs): unit =
+(
+case fxs() of
+  strcon_nil => ()
+| strcon_cons(x1, fxs) =>
+  (iwork(i0, x1); auxmain(i0+1, fxs))
+)
+in
+  auxmain(0, fxs)
+end (* end-of-[stream_iforeach(fxs, iwork)] *)
+
+(* ****** ****** *)
+
+fun
+stream_append
+( fxs: 'a stream
+, fys: 'a stream) = fn() =>
+(
+case fxs() of
+strcon_nil => fys()
+|
+strcon_cons(x1, fxs) =>
+strcon_cons(x1, stream_append(fxs, fys)))
+
+(* ****** ****** *)
+
+fun
+stream_concat
+( fxss: 'a stream stream) = fn() =>
+(
+case fxss() of
+strcon_nil => strcon_nil
+|
+strcon_cons(fxs1, fxss) =>
+stream_append(fxs1, stream_concat(fxss))())
+
+(* ****** ****** *)
+
+fun
+stream_make_map(fxs, fopr) = fn () =>
+(
+case fxs() of
+strcon_nil =>
+strcon_nil
+|
+strcon_cons(x1, fxs) =>
+strcon_cons(fopr(x1), stream_make_map(fxs, fopr))
+)
+
+(* ****** ****** *)
+
+fun
+stream_make_filter
+( fxs: 'a stream
+, test: 'a -> bool): 'a stream = fn () =>
+(
+case fxs() of
   strcon_nil =>
   strcon_nil
-| strcon_cons(x1, xs) =>
-  strcon_cons(fopr(x1), stream_make_map(xs, fopr))
+| strcon_cons(x1, fxs) =>
+  if
+  not(test(x1))
+  then stream_make_filter(fxs, test)()
+  else
+  strcon_cons(x1, stream_make_filter(fxs, test))
 )
 
 (* ****** ****** *)
