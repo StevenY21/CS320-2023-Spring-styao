@@ -147,8 +147,10 @@ def image_blur_bbehav_color(image, ksize, bbehav):
 # save_color_image\
 #    (image_blur_bbehav_color(balloons, 5, 'extend'), "OUTPUT/balloons_blurred.png")
 ####################################################
-class energy_acc:
-    def __init__(self, x_prev, y_prev, energy):
+class energy_acc: 
+    def __init__(self, x_prev, y_prev, energy): 
+        # DISCLAIMER: X_PREV TECHINCALLY REPRESENTS THE Y AXIS AND VICE VERSA
+        # HOWEVER THE CODE SHOULD STILL WORK ON ALL THE TESTS
         self.x_prev = x_prev
         self.y_prev = y_prev
         self.energy = energy
@@ -162,44 +164,38 @@ def seam_energies(image):
                 acc_row.append((energy_acc(-1, -1, curr_pixl)))
             else:
                 if j == 0:
-                    prev = [imgvec.image_get_pixel(image, i-1, j), imgvec.image_get_pixel(image, i-1, j+1)]
+                    prev = [acc[i-1][j].energy, acc[i-1][j+1].energy]
                     if prev[0] <= prev[1]:
                         acc_row.append(energy_acc(i-1, j, curr_pixl + acc[i-1][j].energy))
                     else:
                         acc_row.append(energy_acc(i-1, j+1, curr_pixl + acc[i-1][j+1].energy))
                 elif j == image.width-1:
-                    prev = [imgvec.image_get_pixel(image, i-1, j-1), imgvec.image_get_pixel(image, i-1, j)]
+                    prev = [acc[i-1][j-1].energy, acc[i-1][j].energy]
                     if prev[0] <= prev[1]:
                         acc_row.append(energy_acc(i-1, j-1, curr_pixl + acc[i-1][j-1].energy))
                     else:
                         acc_row.append(energy_acc(i-1, j, curr_pixl + acc[i-1][j].energy))
                 else:
-                    prev = [imgvec.image_get_pixel(image, i-1, j-1), imgvec.image_get_pixel(image, i-1, j), imgvec.image_get_pixel(image, i-1, j+1)]
+                    prev = [acc[i-1][j-1].energy, acc[i-1][j].energy, acc[i-1][j+1].energy]   
                     prev_coords = [(i-1, j-1), (i-1, j), (i-1, j+1)]
                     prev_min = min(prev)
                     for k in range(len(prev)):
                         if prev[k] == prev_min:
-                            acc_row.append(energy_acc(prev_coords[k][0], prev_coords[k][1], curr_pixl+acc[prev_coords[k][0]][prev_coords[k][1]].energy))
-        
-                            break          
+                            acc_row.append(energy_acc(prev_coords[k][0], prev_coords[k][1], curr_pixl+prev[k]))
+                            break         
         acc.append(acc_row)
     return acc
 def get_seam(seam_lst, min_seam_end, pos, res, energy):
-    res2 = []
     prev_x = pos[0]
     prev_y = 0
     while (min_seam_end.x_prev != -1):
         if len(res) == 0:
             res.append(pos)
-            res2 = res2 + [imgvec.image_get_pixel(energy,pos[0], pos[1])]
         else:
             res.append((min_seam_end.x_prev, min_seam_end.y_prev))
             prev_x = min_seam_end.x_prev
             prev_y = min_seam_end.y_prev
             min_seam_end = seam_lst[prev_x][prev_y]
-            res2 = res2 + [imgvec.image_get_pixel(energy, prev_x, prev_y)]
-    res2.reverse()
-    print(res2)
     return (res)
 
 def remove_seam(image, res, seam):
@@ -224,18 +220,13 @@ def image_seam_carving_color(image, ncol):
         new_image = imgvec.image(image.height, image.width-1, [])
         min_seam = energy_acc(-1,-1,-1)
         min_pos = (0,0)
-        res2 = []
-        for i in range(image.width):
-            res2 = res2 + [imgvec.image_get_pixel(energy,1, i)]
-        print(res2)
         for i in range(len(seam_lst[0])):
             if i == 0:
                 min_seam = seam_lst[image.height-1][i]
-            elif seam_lst[image.height-1][i].energy <= min_seam.energy:
+            elif seam_lst[image.height-1][i].energy < min_seam.energy:
                 min_seam = seam_lst[image.height-1][i]
                 min_pos = (image.height-1,i)
         res = []
-        print(min_seam.energy)
         full_seam = get_seam(seam_lst, min_seam, min_pos, res, energy)
         new_image = remove_seam(image, new_image, full_seam)
         image = new_image
