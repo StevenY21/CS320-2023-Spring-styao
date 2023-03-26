@@ -36,5 +36,5 @@ fun part_sum_series(n: real): real =
     else 1.0/n + part_sum_series(n-1.0)
 fun stream_from_ln(n: real): real stream = 
     fn () => strcon_cons(part_sum_series(n), stream_from_ln((n+1.0))) 
-val the_ln2_stream = fn() => stream_from_ln(1.0)
+val the_ln2_stream = fn() => stream_from_ln(1.0)()
 (* end of [CS320-2023-Spring-assign06-01.sml] *)
