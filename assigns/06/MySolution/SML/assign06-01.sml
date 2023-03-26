@@ -24,5 +24,17 @@ val the_ln2_stream: real stream = fn() => ...
 *)
 
 (* ****** ****** *)
-
+fun is_even(n0: real, n1: int): bool = 
+    if n0 > 0.0 then
+        is_even(n0-1.0, n1 + 1)
+    else
+        if n1 mod 2 = 0 then true
+        else false
+fun part_sum_series(n: real): real =
+    if n < 1.0 then 0.0
+    else if is_even(n, 0) then 1.0/(~1.0*n) + part_sum_series(n-1.0)
+    else 1.0/n + part_sum_series(n-1.0)
+fun stream_from_ln(n: real): real stream = 
+    fn () => strcon_cons(part_sum_series(n), stream_from_ln((n+1.0))) 
+val the_ln2_stream = fn() => stream_from_ln(1.0)
 (* end of [CS320-2023-Spring-assign06-01.sml] *)
