@@ -120,15 +120,19 @@ def fnlist_foreach(xs, work_func):
     return None
 
 ####################################################
-def fnlist_reverse(xs):
-    return \
-        fnlist_foldleft \
-        (xs, fnlist_nil(), lambda r0, x0: fnlist_cons(x0, r0))
-####################################################
 def fnlist_append(xs, ys):
     return fnlist_foldright(xs, ys, fnlist_cons)
 def fnlist_concat(xss):
     return fnlist_foldright(xss, fnlist_nil(), fnlist_append)
+####################################################
+def fnlist_rappend(xs, ys):
+    while(xs.ctag > 0):
+        x1 = xs.cons1
+        xs = xs.cons2
+        ys = fnlist_cons(x1, ys)
+    return ys
+def fnlist_reverse(xs):
+    return fnlist_rappend(xs, fnlist_nil())
 ####################################################
 def fnlist_foldleft(xs, ini, fopr_func):
     return \
@@ -552,9 +556,13 @@ def stream_foreach(fxs, work):
     return None # end-of-(stream_foreach)
 
 def stream_forall(fxs, test):
-    foreach_to_forall(stream_foreach)(fxs, test)
+    return foreach_to_forall(stream_foreach)(fxs, test)
+
 def stream_iforall(fxs, itest):
-    foreach_to_iforall(stream_foreach)(fxs, itest)
+    return foreach_to_iforall(stream_foreach)(fxs, itest)
+
+def stream_iforeach(fxs, iwork):
+    return foreach_to_iforeach(stream_foreach)(fxs, iwork)
 
 ###########################################################################
 
@@ -602,7 +610,8 @@ def stream_make_map(fxs, fopr):
         if cxs.ctag == 0:
             return strcon_nil()
         else:
-            return strcon_cons(fopr(cxs.cons1), lambda: helper(cxs.cons2))
+            return strcon_cons\
+                (fopr(cxs.cons1), lambda: helper(cxs.cons2))
         # end-of-(if(cxs.ctag==0)-then-else)
     return lambda: helper(fxs)
 
@@ -610,17 +619,16 @@ def stream_make_map(fxs, fopr):
 
 def stream_make_filter(fxs, test):
     def helper(fxs):
-        cxs = fxs()
-        if cxs.ctag == 0:
-            return strcon_nil()
-        else:
-            if not test(cxs.cons1):
-                return helper(cxs.cons2)
+        while(True):
+            cxs = fxs()
+            if cxs.ctag == 0:
+                return strcon_nil()
             else:
-                return \
-                    strcon_cons(fopr(cxs.cons1), lambda: helper(cxs.cons2))
-            # end-of-(if(not(test(cxs.cons1)))-then-else)
-        # end-of-(if(cxs.ctag==0)-then-else)
+                cx1 = cxs.cons1
+                fxs = cxs.cons2
+                if test(cx1):
+                    return strcon_cons(cx1, lambda: helper(fxs))
+            # end-of-(if(cxs.ctag==0)-then-else)
     return lambda: helper(fxs)
 
 ###########################################################################
