@@ -167,7 +167,7 @@ def pylist_make_map(xs, fopr_func):
 def pylist_map_pylist(xs, fopr_func):
     return foreach_to_map_pylist(pylist_foreach)(xs, fopr_func)
 
-def pylist_filter(xs, test_func):
+def pylist_make_filter(xs, test_func):
     return foreach_to_filter_pylist(pylist_foreach)(xs, test_func)
 def pylist_filter_pylist(xs, test_func):
     return foreach_to_filter_pylist(pylist_foreach)(xs, test_func)
@@ -571,14 +571,24 @@ def fnlist_streamize(xs):
 ###########################################################################
 
 def stream_tabulate(n0, fopr):
-    def helper(i0):
-        if n0 >= 0 and i0 >= n0:
+    def helper1(i0):
+        return strcon_cons(fopr(i0), lambda: helper1(i0+1))
+    def helper2(i0):
+        if i0 >= n0:
             return strcon_nil()
         else:
-            return strcon_cons(fopr(i0), lambda: helper(i0+1))
+            return strcon_cons(fopr(i0), lambda: helper2(i0+1))
         # end-of-(if(i0 >= n0)-then-else)
-    return lambda: helper(0)
+    if n0 < 0:
+        return lambda: helper1(0)
+    else:
+        return lambda: helper2(0)
+    # end-of-(if(n0 < 0)-then-else)
+    
+###########################################################################
 
+def string_streamize(xs):
+    return stream_tabulate(len(xs), lambda i0: xs[i0])
 def pylist_streamize(xs):
     return stream_tabulate(len(xs), lambda i0: xs[i0])
 def pytuple_streamize(xs):
@@ -593,6 +603,23 @@ def stream_make_map(fxs, fopr):
             return strcon_nil()
         else:
             return strcon_cons(fopr(cxs.cons1), lambda: helper(cxs.cons2))
+        # end-of-(if(cxs.ctag==0)-then-else)
+    return lambda: helper(fxs)
+
+###########################################################################
+
+def stream_make_filter(fxs, test):
+    def helper(fxs):
+        cxs = fxs()
+        if cxs.ctag == 0:
+            return strcon_nil()
+        else:
+            if not test(cxs.cons1):
+                return helper(cxs.cons2)
+            else:
+                return \
+                    strcon_cons(fopr(cxs.cons1), lambda: helper(cxs.cons2))
+            # end-of-(if(not(test(cxs.cons1)))-then-else)
         # end-of-(if(cxs.ctag==0)-then-else)
     return lambda: helper(fxs)
 
