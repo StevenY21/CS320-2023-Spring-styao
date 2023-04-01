@@ -21,10 +21,10 @@ Solving the doublet puzzle
 def word_neighbors_legal(word):
     return pylist_filter_pylist(word_neighbors(word), word_is_legal)
 
-def wrdpath_neighbors_legal(wrdpath):
+def wrdpath_neighbors(wrdpath):
     word = wrdpath[-1]
-    neighbor_words = word_neighbors_legal(word)
-    neighbor_lst = [wrdpath + (wrd,) for wrd in neighbor_words]
+    legal_word_neighbors = word_neighbors_legal(word)
+    neighbor_lst = [wrdpath + (wrd,) for wrd in legal_word_neighbors]
     return neighbor_lst
 
 def gtree_bfs(nxs, fchildren):
@@ -61,5 +61,5 @@ tuples are always enumerated ahead of longer ones.
 """
     nxs = queue.Queue() 
     nxs.put((word,))
-    return gtree_bfs(nxs, wrdpath_neighbors_legal)
+    return gtree_bfs(nxs, wrdpath_neighbors)
 ####################################################
