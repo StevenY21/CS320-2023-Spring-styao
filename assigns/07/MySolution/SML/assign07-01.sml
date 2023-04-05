@@ -19,5 +19,29 @@ matrix.
 *)
 
 (* ****** ****** *)
+fun next_stream_list(xss: 'a stream list): 'a stream list = 
+    case xss of 
+        nil => nil
+        | x1 :: xss2 =>
+            case x1() of 
+            strcon_nil => []
+            | strcon_cons(x2, fxs) => fxs::next_stream_list(xss2)
+fun get_col(xss: 'a stream list): 'a list = 
+    case xss of 
+        nil => nil
+        | x1 :: xss2 =>
+            case x1() of
+            strcon_nil => []
+            | strcon_cons(x2, fxs) => x2::get_col(xss2)
+
+fun stream_ziplst(xss: 'a stream list): 'a list stream = 
+    let 
+        val col = get_col(xss)
+        val next_xss = next_stream_list(xss)
+    in  
+        if list_length(xss) <> list_length(next_xss) then stream_nil()
+        else fn () => strcon_cons(col, stream_ziplst(next_xss))
+    end
+
 
 (* end of [CS320-2023-Spring-assign07-01.sml] *)
