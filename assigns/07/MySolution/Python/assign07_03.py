@@ -36,16 +36,19 @@ http://ats-lang.github.io/EXAMPLE/BUCS320/Doublets/Doublets.html
 def doublet_bfs_test(w1, w2):
     if len(w1) != len(w2): #if the words have diff len they cannot be doublets
         return None 
-    elif not(word_is_legal(w1)) or not(word_is_legal(w2)):
+    elif not(word_is_legal(w1)) or not(word_is_legal(w2)): # for non-legal words
         return None
     else:
+        visited_wrds = set() # the words that were already in the paths
+        visited_wrds.add(w1) 
+        dblt_pths = queue.Queue() #queue to hold all the paths
+        dblt_pths.put(tuple([w1]))
         def diff_letters(res, pos): # determines if the letter at that position is different for both words
             if w1[pos] != w2[pos]:
                 res += [(w2[pos], pos)]
             return res
-        letter_lst = int1_foldleft(len(w1), [], diff_letters)
-        # accumulates a list of all the differing letters and the positions
-        def valid_doublet_path(wrd1): # takes a word and forms all the doublets from it
+        letter_lst = int1_foldleft(len(w1), [], diff_letters) # a list of all the differing letters and the positions
+        def get_valid_doublets(wrd1): # takes a word and forms all the doublets from it
             if wrd1 == w2:
                 return []
             valid_doublets = pylist_filter_pylist(word_neighbors(wrd1), word_is_legal) # find legal doublets
@@ -58,32 +61,23 @@ def doublet_bfs_test(w1, w2):
                         if doublet not in doublet_lst:# checks if the doublets have the same letters at the same pos as w2
                             if l[0] == doublet[l[1]]: 
                                 doublet_lst += [doublet]
-                if len(doublet_lst) > 0:
+                if len(doublet_lst) > 0: 
                     return doublet_lst
                 else:
                     return valid_doublets
-        def gpath_bfs2(fnexts): # basically non-lazy version of gpath_bfs
-            visited = set()
-            def helper(qpths):
-                while (True):
-                    if qpths.empty():
-                        return None
-                    else:
-                        pth1 = qpths.get()
-                        for nx2 in fnexts(pth1[-1]):
-                            if not nx2 in visited:
-                                visited.add(nx2)
-                                qpths.put(pth1 + (nx2,))
-                                if w2 == nx2:
-                                    return (pth1 + (nx2,))
-            qpths = queue.Queue()
-            visited.add(w1)
-            qpths.put(tuple([w1]))
-            return helper(qpths)
-        doublet_stream = gpath_bfs2(valid_doublet_path)
-        #return find_doublet_tuple(doublet_stream, 0) # gonna return the stream to figure out what to do next\
-        
-        return doublet_stream
+        while (True): #gpath_bfs algorithm modified 
+            if dblt_pths.empty(): # for when w1 and w2 aren't doublets
+                return None
+            else: # gets next avaiable doublet path and gets its children
+                pth1 = dblt_pths.get() 
+                valid_doublet_lst = get_valid_doublets(pth1[-1]) 
+                if w2 in valid_doublet_lst: # if w2 found to be in the children
+                    return (pth1 + (w2,))
+                else:
+                    for nx2 in valid_doublet_lst: #creates new doublet paths that include the children
+                        if not nx2 in visited_wrds: # must check in order to not create loops
+                            visited_wrds.add(nx2) 
+                            dblt_pths.put(pth1 + (nx2,)) 
     """
     Given two words w1 and w2, this function should
     return None if w1 and w2 do not for a doublet. Otherwise
