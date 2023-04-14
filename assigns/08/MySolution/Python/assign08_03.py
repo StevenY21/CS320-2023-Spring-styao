@@ -31,8 +31,9 @@ Please give a generator-based implementation of graph_bfs!!!
 def generator_graph_bfs(nxs, fnexts):
     visited = set()
     qnxs = queue.Queue()
-    qnxs.put(nxs[0])
-    visited.add(nxs[0])
+    for nx0 in nxs:
+        qnxs.put(nx0)
+        visited.add(nx0)
     while not (qnxs.empty()):
         nx1 = qnxs.get()
         # print("gtree_bfs: helper: nx1 = ", nx1)
