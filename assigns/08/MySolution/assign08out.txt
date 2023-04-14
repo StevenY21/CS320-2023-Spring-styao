@@ -1,0 +1,155 @@
+val it = [1] : int list
+- use "assign08-01-test.sml";          
+[opening assign08-01-test.sml]
+[opening ./../../MySolution/SML/assign08-01.sml]
+[opening ./../../../../mysmlib/mysmlib-cls.sml]
+type 'a optn = 'a option
+exception ERROR320 of string optn
+exception ConsMatch320
+exception OptnSubscript320
+exception ListSubscript320
+val assert320 = fn : bool -> unit
+val assert320_some = fn : bool * string -> unit
+val abs_int = fn : int -> int
+val pow_int_int = fn : int * int -> int
+val char_of_digit = fn : int -> char
+val print_int = fn : int -> unit
+val print_char = fn : char -> unit
+val print_bool = fn : bool -> unit
+val print_string = fn : string -> unit
+val print_newline = fn : unit -> unit
+val println = fn : string -> unit
+val println_string = fn : string -> unit
+val list_is_nil = fn : 'a list -> bool
+val list_is_cons = fn : 'a list -> bool
+val list_unnil = fn : 'a list -> unit
+val list_uncons = fn : 'a list -> 'a * 'a list
+val optn_is_none = fn : 'a optn -> bool
+val optn_is_some = fn : 'a optn -> bool
+val optn_unnone = fn : 'a optn -> unit
+val optn_unsome = fn : 'a optn -> 'a
+val list_length = fn : 'a list -> int
+val list_map = fn : 'a list * ('a -> 'b) -> 'b list
+val list_filter = fn : 'a list * ('a -> bool) -> 'a list
+val list_reduce_left = fn : 'a list * 'b * ('b * 'a -> 'b) -> 'b
+val list_reduce_right = fn : 'a list * 'b * ('a * 'b -> 'b) -> 'b
+val list_append = fn : 'a list * 'a list -> 'a list
+val list_concat = fn : 'a list list -> 'a list
+val list_extend = fn : 'a list * 'a -> 'a list
+val list_foldleft = <hidden-value> : 'a list * 'b * ('b * 'a -> 'b) -> 'b
+val list_foldright = <hidden-value> : 'a list * 'b * ('a * 'b -> 'b) -> 'b
+val list_reverse = fn : 'a list -> 'a list
+val list_rappend = fn : 'a list * 'a list -> 'a list
+val list_forall = fn : 'a list * ('a -> bool) -> bool
+val list_exists = fn : 'a list * ('a -> bool) -> bool
+val list_foreach = fn : 'a list * ('a -> unit) -> unit
+val int0_foreach = fn : int * (unit -> unit) -> unit
+val int1_foreach = fn : int * (int -> unit) -> unit
+val string_foreach = fn : string * (char -> unit) -> unit
+val forall_to_foreach = fn
+  : ('a * ('b -> bool) -> bool) -> 'a * ('b -> unit) -> unit
+val foreach_to_forall = fn
+  : ('a * ('b -> unit) -> unit) -> 'a * ('b -> bool) -> bool
+val foreach_to_foldleft = fn
+  : ('a * ('b -> unit) -> unit) -> 'a * 'c * ('c * 'b -> 'c) -> 'c
+val foreach_to_length = fn : ('a * ('b -> unit) -> unit) -> 'a -> int
+val foreach_to_get_at = fn : ('a * ('b -> unit) -> unit) -> 'a * int -> 'b
+val foreach_to_listize = fn : ('a * ('b -> unit) -> unit) -> 'a -> 'b list
+val foreach_to_rlistize = fn : ('a * ('b -> unit) -> unit) -> 'a -> 'b list
+val foreach_to_map_list = fn
+  : ('a * ('b -> unit) -> unit) -> 'a * ('b -> 'c) -> 'c list
+val foreach_to_filter_list = fn
+  : ('a * ('b -> unit) -> unit) -> 'a * ('b -> bool) -> 'b list
+val int1_forall = fn : int * (int -> bool) -> bool
+val string_forall = fn : string * (char -> bool) -> bool
+val list_get_at = fn : 'a list * int -> 'a
+val int1_listize = fn : int -> int list
+val int1_rlistize = fn : int -> int list
+val list_rlistize = fn : 'a list -> 'a list
+val string_listize = fn : string -> char list
+val string_rlistize = fn : string -> char list
+val int1_map_list = fn : int * (int -> 'a) -> 'a list
+val string_map_list = fn : string * (char -> 'a) -> 'a list
+val int1_foldleft = fn : int * 'a * ('a * int -> 'a) -> 'a
+val int1_foldright = fn : int * 'a * (int * 'a -> 'a) -> 'a
+val list_foldleft = fn : 'a list * 'b * ('b * 'a -> 'b) -> 'b
+val list_foldright = fn : 'a list * 'b * ('b * 'a -> 'b) -> 'b
+val string_foldleft = fn : string * 'a * ('a * char -> 'a) -> 'a
+val string_foldright = fn : string * 'a * (char * 'a -> 'a) -> 'a
+val list_tabulate = fn : int * (int -> 'a) -> 'a list
+type ('a,'b) foreach_t = 'a * ('b -> unit) -> unit
+type ('a,'b) iforeach_t = 'a * (int * 'b -> unit) -> unit
+type ('a,'b,'c) ifoldleft_t = 'a * 'c * ('c * int * 'b -> 'c) -> 'c
+val foreach_to_iforeach = fn : ('a,'b) foreach_t -> ('a,'b) iforeach_t
+val foreach_to_ifoldleft = fn : ('a,'b) foreach_t -> ('a,'b,'c) ifoldleft_t
+type 'a array = 'a array
+type 'a vector = 'a vector
+val array_foreach = fn : 'a array * ('a -> unit) -> unit
+val array_tabulate = fn : int * (int -> 'a) -> 'a array
+val array_forall = fn : 'a array * ('a -> bool) -> bool
+val array_foldleft = fn : 'a array * 'b * ('b * 'a -> 'b) -> 'b
+val array_iforeach = fn : 'a array * (int * 'a -> unit) -> unit
+val array_ifoldleft = fn : 'a array * 'b * ('b * int * 'a -> 'b) -> 'b
+val vector_foreach = fn : 'a vector * ('a -> unit) -> unit
+val vector_tabulate = fn : int * (int -> 'a) -> 'a vector
+val vector_forall = fn : 'a vector * ('a -> bool) -> bool
+val vector_foldleft = fn : 'a vector * 'b * ('b * 'a -> 'b) -> 'b
+val vector_iforeach = fn : 'a vector * (int * 'a -> unit) -> unit
+val vector_ifoldleft = fn : 'a vector * 'b * ('b * int * 'a -> 'b) -> 'b
+val list_zip2 = fn : 'a list * 'b list -> ('a * 'b) list
+val list_z2map = fn : 'a list * 'b list * ('a * 'b -> 'c) -> 'c list
+val list_cross2_row = fn : 'a list * 'b list -> ('a * 'b) list
+val list_cross2_col = fn : 'a list * 'b list -> ('a * 'b) list
+datatype 'a strcon = strcon_cons of 'a * (unit -> 'a strcon) | strcon_nil
+type 'a stream = unit -> 'a strcon
+val strcon_head = fn : 'a strcon -> 'a
+val strcon_tail = fn : 'a strcon -> unit -> 'a strcon
+val stream_nil = fn : unit -> unit -> 'a strcon
+val stream_cons = fn : 'a * 'a stream -> unit -> 'a strcon
+val stream_head = fn : 'a stream -> 'a
+val stream_tail = fn : 'a stream -> unit -> 'a strcon
+val int1_streamize = fn : int -> unit -> int strcon
+val list_streamize = fn : 'a list -> unit -> 'a strcon
+val stream_tabulate = fn : int * (int -> 'a) -> 'a stream
+val string_streamize = fn : string -> char stream
+val array_streamize = fn : 'a array -> 'a stream
+val vector_streamize = fn : 'a vector -> 'a stream
+val stream_forall = fn : (unit -> 'a strcon) * ('a -> bool) -> bool
+val stream_iforall = fn : (unit -> 'a strcon) * (int * 'a -> bool) -> bool
+val stream_foreach = fn : (unit -> 'a strcon) * ('a -> 'b) -> unit
+val stream_get_at = fn : 'a stream * int -> 'a
+val stream_iforeach = fn : (unit -> 'a strcon) * (int * 'a -> 'b) -> unit
+val stream_length = fn : (unit -> 'a strcon) -> int
+val stream_append = fn : 'a stream * 'a stream -> unit -> 'a strcon
+val stream_concat = fn : 'a stream stream -> 'a stream
+val stream_make_map = fn
+  : (unit -> 'a strcon) * ('a -> 'b) -> unit -> 'b strcon
+val stream_make_filter = fn : 'a stream * ('a -> bool) -> 'a stream
+val stream_make_imap = fn : 'a stream * (int * 'a -> 'b) -> unit -> 'b strcon
+val stream_make_ifilter = fn : 'a stream * (int * 'a -> bool) -> 'a stream
+val stream_merge2 = fn
+  : 'a stream * 'a stream * ('a * 'a -> bool) -> 'a stream
+val it = () : unit
+val stream_interleave = fn : 'a * 'a list -> 'a list stream
+val stream_permute_list = fn : 'a list -> 'a list stream
+val it = () : unit
+Assign08-01-test passed!
+val it = () : unit
+
+Assign08-02-test passed!
+
+Assign08-02-test2 passed!
+
+[nltk_data] Downloading package words to
+[nltk_data]     C:\Users\steve\AppData\Roaming\nltk_data...
+[nltk_data]   Package words is already up-to-date!
+potato:  True
+tomato:  True
+zucchini:  True
+doublet_bfs_test('never', 'never') =  True
+doublet_bfs_test('never', 'again') =  True
+doublet_bfs_test('flour', 'bread') =  True
+doublet_bfs_test('hello', 'world') =  True
+doublet_bfs_test('hello', 'xerox') =  False
+doublet_bfs_test('xerox', 'hello') =  False
+Assign08-03-test passed!
