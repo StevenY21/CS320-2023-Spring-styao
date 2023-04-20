@@ -23,6 +23,16 @@ use "./../../mysmlib/mysmlib-cls.sml";
 (*
 fun
 stream_drawdowns(fxs: int stream): int list stream = ... *)
+fun drawdowns(fxs: int stream, xs: int list, x2: int): int list stream = fn() =>
+    case fxs() of
+        strcon_nil => strcon_nil
+        | strcon_cons(x1, fxs) => 
+            if x1 <= x2 then drawdowns(fxs, list_append(xs, [x1]), x2)()
+            else strcon_cons(xs, drawdowns(fxs, [x1], x1))
+fun stream_drawdowns(fxs: int stream): int list stream = fn() =>
+    case fxs() of
+        strcon_nil => strcon_nil
+        | strcon_cons(x1, fxs) => drawdowns(fxs, [x1], x1)()
 
 (* ****** ****** *)
 
