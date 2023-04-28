@@ -1,0 +1,29 @@
+[opening ./../../MySolution/SML/assign09-01.sml]
+val list_kmerge2 = fn : int list * int list * (int list -> 'a) -> 'a
+val it = () : unit
+Assign09-01-test passed!
+val list_merge2 = fn : int list * int list -> int list
+val xs1 = <hidden-value> : int list
+val xs2 = <hidden-value> : int list
+val xs1 = <hidden-value> : int list
+val xs2 = <hidden-value> : int list
+val xs1 = <hidden-value> : int list
+val xs2 = <hidden-value> : int list
+val xs1 = <hidden-value> : int list
+val xs2 = <hidden-value> : int list
+val xs1 = [1,2,3,4,5] : int list
+val xs2 = [5,6,7,8,9] : int list
+val it = () : unit
+
+val it = () : unit
+type 'a fgenerator = 'a option generator
+val fgenerator_make_stream = fn : 'a stream -> 'a fgenerator
+val it = () : unit
+Assign09-02-test passed!
+val fgenerator_next = fn : 'a option generator -> 'a
+val fgenerator_foreach = fn : 'a fgenerator * ('a -> unit) -> unit
+val ans1 = true : bool
+val ans2 = false : bool
+val it = () : unit
+
+Assign09-03-test passed!
