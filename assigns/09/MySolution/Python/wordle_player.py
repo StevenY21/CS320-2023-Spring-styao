@@ -84,6 +84,7 @@ def wordle_guess(hints):
                 for c in abcs:
                     if total_c_amt.get(c) == None and c_invalid.get(c) == None and code1_c.get(c) == None: # making sure the random letter is allowed
                         guess[i] = c
+                        break
 
     res = ''
     for c in guess:
