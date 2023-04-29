@@ -1,1 +1,1 @@
-wordle_player.py
+from wordle_player import *

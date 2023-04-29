@@ -28,5 +28,38 @@ wordle_hint(w1, w2) =
 """
 ########################################################################
 def wordle_hint(w1, w2):
-    raise NotImplementedError
+    if w1 == w2: # if both w1 and w2 are same word
+        return [(1, c) for c in w1]
+    else:
+        wrd_hint = []
+        w_length = range(len(w1)) 
+        poslst = {c:0 for c in w1} #dictionary, with the chars being the keys and the number of instances of the char being the value
+        chklst= []
+        clist2 = []
+        for i in w_length:
+            c1 = w1[i]
+            poslst[c1] += 1
+            clist2 += [(i, w2[i])]
+        for (j, c) in clist2:
+            if w1[j] == c:
+                wrd_hint += [(1, c)]
+                poslst[c] -= 1
+            else:
+                wrd_hint += [(-1, c)] # -1 is just a temp value, this is a temp tuple to be modified later
+                chklst += [j]
+        for j in chklst: # checks the temp tuples to determine if it is 1 or 2
+            i = wrd_hint[j][0]
+            c = wrd_hint[j][1]
+            if poslst[c] == 0:
+                wrd_hint[j] = (0, c)
+            else:
+                wrd_hint[j] = (2, c)
+                poslst[c] -= 1
+        return wrd_hint
+                        
+    # pseudocode
+    # extra worlde rules:
+    # if the guess has a certain letter in all the correct positions then any extra usage would be 0
+    # like original: apple, and guess: ppppp will get 01100
+
 ########################################################################

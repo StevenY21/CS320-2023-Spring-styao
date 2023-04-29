@@ -27,3 +27,8 @@ val ans2 = false : bool
 val it = () : unit
 
 Assign09-03-test passed!
+
+myguess =  iltsne
+myguess =  spring
+myguess =  chrysanthemum
+Assign09-04-test passed!
