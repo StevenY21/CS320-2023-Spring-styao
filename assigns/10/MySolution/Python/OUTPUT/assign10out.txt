@@ -1,0 +1,7 @@
+image_seam_carving_color: i0 = 0
+ptotal =  58811238
+Assign10-01-test passed!
+
+image_seam_carving_color: i0 = 0
+ptotal =  58712691
+Assign10-01-test2 passed!
