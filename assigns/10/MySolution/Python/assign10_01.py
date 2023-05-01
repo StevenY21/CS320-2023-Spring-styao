@@ -5,6 +5,7 @@ import sys
 sys.path.append('./../../../05')
 sys.path.append('./../../../../mypylib')
 from mypylib_cls import *
+sys.setrecursionlimit(10000)
 ####################################################
 """
 HX-2023-03-14: 30 points
